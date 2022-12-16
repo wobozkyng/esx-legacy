@@ -266,11 +266,4 @@ Locales['fr'] = {
   ['fuel_tank'] = 'bouchon du réservoir',
   ['windows'] = 'fenêtres',
   ['stickers'] = 'autocollants',
-
--- Xenon Colors
-  ['mintgreen'] = 'Mint Green',
-  ['goldenshower'] = 'Golden Shower',
-  ['ponypink'] = 'Pony Pink',
-  ['hotpink'] = 'Hot Pink',
-  ['blacklight'] = 'Blacklight',
 }

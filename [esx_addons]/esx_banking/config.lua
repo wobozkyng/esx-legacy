@@ -1,8 +1,8 @@
 Config = {
 	Debug = false,
 	DrawMarker = 10,
-	Locale = GetConvar('esx:locale', 'en'),
-	EnablePeds = true,
+	Locale = 'en',
+	EnablePeds = true, 
 	AtmModels = {`prop_fleeca_atm`, `prop_atm_01`, `prop_atm_02`, `prop_atm_03`},
 	Banks = {
 		{

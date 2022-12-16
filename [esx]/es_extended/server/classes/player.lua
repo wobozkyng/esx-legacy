@@ -19,12 +19,6 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 	if Config.Multichar then self.license = 'license'.. identifier:sub(identifier:find(':'), identifier:len()) else self.license = 'license:'..identifier end
 
 	ExecuteCommand(('add_principal identifier.%s group.%s'):format(self.license, self.group))
-	
-	Player(self.source).state:set("identifier", self.identifier, true)
-	Player(self.source).state:set("license", self.license, true)
-	Player(self.source).state:set("job", self.job, true)
-	Player(self.source).state:set("group", self.group, true)
-	Player(self.source).state:set("name", self.name, true)
 
 	function self.triggerEvent(eventName, ...)
 		TriggerClientEvent(eventName, self.source, ...)
@@ -40,10 +34,25 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 	end
 
 	function self.updateCoords()
-		local Ped = GetPlayerPed(self.source)
-		local coords = GetEntityCoords(Ped)
-		local heading = GetEntityHeading(Ped)
-		self.coords = {x = ESX.Math.Round(coords.x, 1), y = ESX.Math.Round(coords.y, 1), z = ESX.Math.Round(coords.z, 1), heading = ESX.Math.Round(heading or 0.0, 1)}
+		SetTimeout(1000,function()
+			local Ped = GetPlayerPed(self.source)
+			if not DoesEntityExist(Ped) then
+				print(('source %s playerId %s ped no longer exist, loop stopped.'):format(self.source, self.playerId))
+				return
+			end
+			local coords = GetEntityCoords(Ped)
+			local distance = #(coords - vector3(self.coords.x, self.coords.y, self.coords.z))
+			if distance > 1.5 then
+				local heading = GetEntityHeading(Ped)
+				self.coords = {
+					x = coords.x,
+					y = coords.y, 
+					z = coords.z, 
+					heading = heading or 0.0
+				}
+			end
+			self.updateCoords()
+		end)
 	end
 
 	function self.getCoords(vector)
@@ -84,7 +93,6 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 	function self.setGroup(newGroup)
 		ExecuteCommand(('remove_principal identifier.%s group.%s'):format(self.license, self.group))
 		self.group = newGroup
-		Player(self.source).state:set("group", self.group, true)
 		ExecuteCommand(('add_principal identifier.%s group.%s'):format(self.license, self.group))
 	end
 
@@ -94,7 +102,6 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 
 	function self.set(k, v)
 		self.variables[k] = v
-		Player(self.source).state:set(k, v, true)
 	end
 
 	function self.get(k)
@@ -178,7 +185,6 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 
 	function self.setName(newName)
 		self.name = newName
-		Player(self.source).state:set("name", self.name, true)
 	end
 
 	function self.setAccountMoney(accountName, money, reason)
@@ -369,7 +375,6 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 
 			TriggerEvent('esx:setJob', self.source, self.job, lastJob)
 			self.triggerEvent('esx:setJob', self.job)
-			Player(self.source).state:set("job", self.job, true)
 		else
 			print(('[es_extended] [^3WARNING^7] Ignoring invalid ^5.setJob()^7 usage for ID: ^5%s^7, Job: ^5%s^7'):format(self.source, job))
 		end

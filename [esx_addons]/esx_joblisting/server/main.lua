@@ -14,12 +14,6 @@ ESX.RegisterServerCallback('esx_joblisting:getJobsList', function(source, cb)
   cb(jobs)
 end)
 
-function IsJobAvailable(job)
-  local jobs = ESX.GetJobs()
-  local JobToCheck = jobs[job]
-  return not JobToCheck.whitelisted
-end
-
 function IsNearCentre(player)
   local Ped = GetPlayerPed(player)
   local PedCoords = GetEntityCoords(Ped)
@@ -43,13 +37,11 @@ AddEventHandler('esx_joblisting:setJob', function(job)
   local xPlayer = ESX.GetPlayerFromId(source)
   local jobs = getJobs()
 
-  if xPlayer and IsNearCentre(source) and IsJobAvailable(job) then
+  if xPlayer and IsNearCentre(source) then
     if ESX.DoesJobExist(job, 0) then
       xPlayer.setJob(job, 0)
     else
       print("[^1ERROR^7] Tried Setting User ^5".. source .. "^7 To Invalid Job - ^5"..job .."^7!")
     end
-  else 
-    print("[^3WARNING^7] User ^5".. source .. "^7 Attempted to Exploit ^5`esx_joblisting:setJob`^7!")
   end
 end)

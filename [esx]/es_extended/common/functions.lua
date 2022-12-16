@@ -7,7 +7,11 @@ for i = 97, 122 do table.insert(Charset, string.char(i)) end
 function ESX.GetRandomString(length)
 	math.randomseed(GetGameTimer())
 
-	return length > 0 and ESX.GetRandomString(length - 1) .. Charset[math.random(1, #Charset)] or ''
+	if length > 0 then
+		return ESX.GetRandomString(length - 1) .. Charset[math.random(1, #Charset)]
+	else
+		return ''
+	end
 end
 
 function ESX.GetConfig()

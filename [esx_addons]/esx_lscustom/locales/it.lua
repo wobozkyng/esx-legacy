@@ -266,11 +266,4 @@ Locales['it'] = {
   ['fuel_tank'] = 'serbatoio carburante',
   ['windows'] = 'finestrini',
   ['stickers'] = 'Livrea',
-
--- Xenon Colors
-  ['mintgreen'] = 'Mint Green',
-  ['goldenshower'] = 'Golden Shower',
-  ['ponypink'] = 'Pony Pink',
-  ['hotpink'] = 'Hot Pink',
-  ['blacklight'] = 'Blacklight',
 }

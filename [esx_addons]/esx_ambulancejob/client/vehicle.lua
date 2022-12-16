@@ -50,9 +50,9 @@ function OpenVehicleSpawnerMenu(type, hospital, part, partNum)
 							local vehicleName = GetLabelText(GetDisplayNameFromVehicleModel(props.model))
 							local label = ('%s - <span style="color:darkgoldenrod;">%s</span>: '):format(vehicleName, props.plate)
 
-							if v.stored == 1 then
+							if v.stored then
 								label = label .. ('<span style="color:green;">%s</span>'):format(TranslateCap('garage_stored'))
-							elseif v.stored == 0 then
+							else
 								label = label .. ('<span style="color:darkred;">%s</span>'):format(TranslateCap('garage_notstored'))
 							end
 
@@ -73,7 +73,7 @@ function OpenVehicleSpawnerMenu(type, hospital, part, partNum)
 							align    = 'top-left',
 							elements = garage
 						}, function(data2, menu2)
-							if data2.current.stored == 1 then
+							if data2.current.stored then
 								local foundSpawn, spawnPoint = GetAvailableVehicleSpawnPoint(hospital, part, partNum)
 
 								if foundSpawn then

@@ -199,21 +199,23 @@ end)
 
 AddStateBagChangeHandler('VehicleProperties', nil, function(bagName, key, value)
 	if value then
-			Wait(0)
-			local NetId = value.NetId
-			local Vehicle = NetworkGetEntityFromNetworkId(NetId)
-			local Tries = 0
-			while Vehicle == 0 do
-				Vehicle = NetworkGetEntityFromNetworkId(NetId)
-				Wait(100)
-				Tries = Tries + 1
-				if Tries > 300 then
-					break
-				end
+		Wait(0)
+		local NetId = value.NetId
+		local Vehicle = NetworkGetEntityFromNetworkId(NetId)
+		print('[CLIENT] Vehicle Network Entity : '..Vehicle)
+		local Tries = 0
+		while Vehicle == 0 do
+			Vehicle = NetworkGetEntityFromNetworkId(NetId)
+			Wait(100)
+			Tries = Tries + 1
+			if Tries > 300 then
+				break
 			end
-			if NetworkGetEntityOwner(Vehicle) == PlayerId() then
-					ESX.Game.SetVehicleProperties(Vehicle, value)
-			end
+		end
+		if NetworkGetEntityOwner(Vehicle) == PlayerId() then
+			print('[CLIENT] Vehicle Properties have been Set')
+			ESX.Game.SetVehicleProperties(Vehicle, value)
+		end
 	end
 end)
 
@@ -453,7 +455,7 @@ function StartServerSyncLoops()
 
 				if distance > 1 then
 					previousCoords = playerCoords
-					TriggerServerEvent('esx:updateCoords')
+					-- TriggerServerEvent('esx:updateCoords')
 				end
 			end
 			Wait(1500)
